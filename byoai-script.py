@@ -5,6 +5,7 @@ from swarm_integration import SwarmIntegration
 from flask import Flask, request, jsonify
 from werkzeug.exceptions import BadRequest, NotFound
 import threading
+import time
 
 # Updated environment variables
 CONTEXT_WORKFLOW_DIR = os.environ.get('CONTEXT_WORKFLOW_DIR', 'workflows')
@@ -40,9 +41,11 @@ def monitor_and_scale_agents():
     while True:
         swarm_state = swarm.get_swarm_state()
         pending_tasks = swarm_state['pending_tasks']
-        if pending_tasks > 10:
+        active_agents = swarm_state['active_agents']
+        if pending_tasks > active_agents * 2:  # Scale up if there are more than 2 pending tasks per agent
             swarm.add_agent()
-        threading.Event().wait(10)  # Check every 10 seconds
+            logging.info(f"Scaled up: Added new agent. Total agents: {active_agents + 1}")
+        time.sleep(10)  # Check every 10 seconds
 
 @app.route('/')
 def home():

@@ -11,7 +11,7 @@ This project integrates the BYOAI (Bring Your Own AI) framework with OpenAI's Sw
 - Specialization-based task assignment
 - Priority queue for efficient task management
 - RESTful API for task submission and status monitoring
-- Dynamic agent scaling using Docker containers
+- Dynamic agent scaling based on workload
 - Detailed logging and monitoring
 - Task redistribution for load balancing
 
@@ -34,9 +34,6 @@ This project integrates the BYOAI (Bring Your Own AI) framework with OpenAI's Sw
    export CONTEXT_AGENT_PORT=8099
    export CONTEXT_AGENT_HOST=0.0.0.0
    ```
-
-4. Install Docker:
-   Follow the [official Docker installation guide](https://docs.docker.com/get-docker/) for your operating system.
 
 ## Usage
 
@@ -114,7 +111,7 @@ The integrated BYOAI-Swarm system consists of the following main components:
 
 4. **Flask API**: Provides endpoints for system interaction and monitoring.
 
-5. **Docker Integration**: Allows dynamic spawning of agent containers for scalability.
+5. **Dynamic Agent Scaling**: Automatically scales the number of agents based on the current workload.
 
 ## Workflow Structure
 
