@@ -1,0 +1,93 @@
+1. Task Management and Distribution
+Success Criteria:
+
+Task Prioritization: Tasks are assigned based on their priority. High-priority tasks are always executed first.
+Specialization Handling: Tasks requiring a specific specialization are routed only to agents that can handle them.
+Fairness and Efficiency: If multiple agents share a specialization, tasks should be distributed efficiently without overloading any single agent.
+Key Questions for the Agent:
+
+Can the system properly assign tasks of varying priorities to agents in the expected order?
+Are tasks requiring specializations (e.g., “math”) only assigned to agents with matching capabilities?
+When multiple agents can handle a task, how does the system ensure efficient task distribution?
+Testing:
+
+Create tasks with different priorities and specializations. Monitor how they are queued and distributed.
+Ensure low-priority tasks don't block high-priority ones.
+Simulate a mix of agents with varying specializations to check for distribution fairness.
+2. API Stability and Error Handling
+Success Criteria:
+
+Error Messages: API responses should clearly indicate errors, such as malformed requests or missing required fields.
+Valid Data Submission: Only valid JSON payloads are accepted for task creation, with appropriate validation for fields like task description, priority, and specialization.
+Key Questions for the Agent:
+
+Does the API return meaningful error messages for invalid or incomplete requests?
+Is there proper validation for incoming data, ensuring that only tasks with the necessary details are processed?
+Are edge cases (e.g., missing fields, non-JSON requests) handled gracefully?
+Testing:
+
+Send invalid requests (missing fields, incorrect data types) and monitor the API's behavior.
+Ensure that valid requests are processed as expected and that responses contain appropriate task IDs and success messages.
+Test various API methods (GET/POST) to verify consistency and clarity in responses.
+3. Concurrency and Performance
+Success Criteria:
+
+Smooth Task Execution: Agents must be able to handle tasks concurrently without bottlenecks, and the system should prevent race conditions.
+Queue Stability: The PriorityQueue must operate smoothly even under high loads (many tasks being added and executed).
+Efficient Locking: Ensure that task queue operations and agent task retrievals don’t cause deadlocks or slowdowns.
+Key Questions for the Agent:
+
+How does the system perform when multiple tasks are being added rapidly?
+Are agents retrieving and completing tasks without delay, and is there no unnecessary locking or contention?
+Can the system scale with an increasing number of agents and tasks?
+Testing:
+
+Simulate heavy loads by creating many tasks in rapid succession and monitoring agent performance.
+Test with multiple agents to observe concurrency and how the PriorityQueue handles load.
+Monitor for any delays or deadlocks during task assignment and execution.
+4. Logging and Monitoring
+Success Criteria:
+
+Detailed Logging: Logs should provide sufficient detail to trace the lifecycle of a task, from creation to completion, including assignment and status changes.
+Clear Status Updates: The system should log both task and agent activities in a readable format.
+Key Questions for the Agent:
+
+Does the system log each task’s status (pending, in progress, completed) and include sufficient details about which agent handled the task?
+Is it easy to monitor the current swarm state through logs and API calls?
+Testing:
+
+Execute a variety of tasks and check the logs to ensure each step of task creation, assignment, and completion is recorded.
+Verify that logs clearly indicate which agent is handling a task, the task’s priority, and its final status.
+5. Swarm State and Agent Management
+Success Criteria:
+
+Accurate Swarm State: The /swarm/state endpoint should return accurate information about active agents, pending tasks, and completed tasks.
+Agent Specialization Management: Each agent’s specialization should be properly reflected in the system, and tasks should only be assigned to suitable agents.
+Key Questions for the Agent:
+
+Does the /swarm/state API provide a complete and accurate snapshot of the swarm, including all pending and completed tasks?
+Are agent specializations correctly reflected in the state, and can the system track how agents are registered and used?
+Testing:
+
+Query the swarm state during different stages of operation (when tasks are pending, when tasks are in progress, when agents are idle) to ensure accuracy.
+Test agent registration and task assignment based on specialization, and check the API responses for correctness.
+6. Documentation and Usability
+Success Criteria:
+
+Comprehensive Documentation: The README and relevant files should be updated with clear instructions on how to interact with the new swarm-based system.
+API Examples: Provide examples of how to use the API, including adding tasks, querying the swarm state, and managing agents.
+Key Questions for the Agent:
+
+Are the changes to the system documented clearly in the README, with an explanation of how the swarm works?
+Does the API documentation include practical examples for users?
+Testing:
+
+Review the README for clarity and accuracy, ensuring that it provides enough information for others to understand and use the new swarm system.
+Test the API with the provided examples to ensure they work as described.
+Final Success Criteria Recap:
+Task Distribution: Tasks are distributed based on priority and agent specialization, with no bottlenecks.
+API Stability: The API works as intended, handling both valid and invalid requests gracefully.
+Concurrency: The system performs efficiently with multiple agents handling tasks concurrently.
+Logging: Logs provide a clear, detailed account of task and agent activity.
+Accurate State Management: The swarm’s state is accurately reflected via the API.
+Documentation: Clear and up-to-date documentation reflects the new swarm-based functionality.

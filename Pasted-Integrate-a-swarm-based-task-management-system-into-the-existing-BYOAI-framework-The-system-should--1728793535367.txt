@@ -1,0 +1,36 @@
+Integrate a swarm-based task management system into the existing BYOAI framework. The system should manage and distribute tasks based on priority and agent specialization. Additionally, expose an API to interact with the swarm and manage tasks through HTTP endpoints.
+
+Requirements:
+
+Swarm-Based Task Management:
+
+Create a SwarmIntegration class that manages a pool of agents.
+Each agent should be able to specialize in different tasks (e.g., math, language, image).
+Tasks should be distributed to agents based on their specializations and priority.
+Implement functionality to handle task statuses (e.g., pending, in-progress, completed).
+Priority Queue:
+
+Use a priority queue to manage tasks. Tasks with higher priority should be processed first.
+Agent System:
+
+Implement a worker thread for each agent to continuously fetch and execute tasks from the queue.
+Agents should sleep when no tasks are available and wake up when new tasks are added.
+API Integration:
+
+Extend the Flask application to expose endpoints for adding tasks, querying the swarm state, and interacting with agents.
+Endpoints should include:
+/swarm/add_task: Accepts task descriptions, priorities, and specializations via POST.
+/swarm/state: Returns the current state of the swarm, including active agents, pending tasks, and completed tasks.
+Logging and Debugging:
+
+Include detailed logging at each step of task creation, agent registration, and task execution for easy debugging and monitoring.
+Documentation:
+
+Update the README to reflect the new swarm functionality.
+Provide API usage examples and detailed explanations of the swarm system.
+Success Criteria:
+
+The BYOAI system should successfully integrate swarm-based task management.
+Tasks should be handled in accordance with their priority and specialization.
+API endpoints should allow external users to interact with the swarm, add tasks, and view the swarm’s status.
+The updated README and documentation should clearly explain the new functionalities and how to use them.

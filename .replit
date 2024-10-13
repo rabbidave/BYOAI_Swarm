@@ -25,7 +25,7 @@ agentRequireRestartOnSave = false
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python byoai-script.py"
-waitForPort = 8000
+waitForPort = 8099
 
 [deployment]
 run = ["sh", "-c", "python byoai-script.py"]
@@ -33,3 +33,7 @@ run = ["sh", "-c", "python byoai-script.py"]
 [[ports]]
 localPort = 8000
 externalPort = 8099
+
+[[ports]]
+localPort = 8099
+externalPort = 80

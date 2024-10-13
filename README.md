@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project integrates the BYOAI (Bring Your Own AI) framework with OpenAI's Swarm, creating a powerful, decentralized, and context-driven agent system. By combining these technologies, we've created a flexible and scalable solution for distributed task execution and AI-driven workflows.
+This project integrates the BYOAI (Bring Your Own AI) framework with OpenAI's Swarm, creating a powerful, decentralized, and context-driven agent system. The integration provides a flexible and scalable solution for distributed task execution and AI-driven workflows.
 
 ## Features
 
@@ -11,7 +11,9 @@ This project integrates the BYOAI (Bring Your Own AI) framework with OpenAI's Sw
 - Specialization-based task assignment
 - Priority queue for efficient task management
 - RESTful API for task submission and status monitoring
-- Seamless integration of BYOAI and Swarm concepts
+- Dynamic agent scaling using Docker containers
+- Detailed logging and monitoring
+- Task redistribution for load balancing
 
 ## Installation
 
@@ -29,9 +31,12 @@ This project integrates the BYOAI (Bring Your Own AI) framework with OpenAI's Sw
 3. Set up environment variables:
    ```
    export CONTEXT_WORKFLOW_DIR=workflows
-   export CONTEXT_AGENT_PORT=8000
+   export CONTEXT_AGENT_PORT=8099
    export CONTEXT_AGENT_HOST=0.0.0.0
    ```
+
+4. Install Docker:
+   Follow the [official Docker installation guide](https://docs.docker.com/get-docker/) for your operating system.
 
 ## Usage
 
@@ -41,12 +46,61 @@ This project integrates the BYOAI (Bring Your Own AI) framework with OpenAI's Sw
    ```
 
 2. Access the API endpoints:
-   - Home: `http://localhost:8000/`
-   - Status: `http://localhost:8000/status`
-   - Swarm State: `http://localhost:8000/swarm/state`
-   - Add Task: `POST http://localhost:8000/swarm/add_task`
+   - Home: `http://localhost:8099/`
+   - Status: `http://localhost:8099/status`
+   - Swarm State: `http://localhost:8099/swarm/state`
+   - Add Task: `POST http://localhost:8099/swarm/add_task`
+   - Task Status: `GET http://localhost:8099/swarm/task_status/<task_id>`
+   - Agent Load: `GET http://localhost:8099/swarm/agent_load`
+   - Redistribute Tasks: `POST http://localhost:8099/swarm/redistribute_tasks`
+   - Swarm Statistics: `GET http://localhost:8099/swarm/statistics`
+   - Scale Agents: `POST http://localhost:8099/agents/scale`
 
 3. Create and place workflow YAML files in the `workflows` directory. The system will automatically load and execute these workflows.
+
+## API Usage Examples
+
+### Adding a Task
+
+```bash
+curl -X POST http://localhost:8099/swarm/add_task \
+  -H "Content-Type: application/json" \
+  -d '{"description": "Complex math calculation", "priority": 8, "specialization": "math"}'
+```
+
+### Getting Swarm State
+
+```bash
+curl http://localhost:8099/swarm/state
+```
+
+### Checking Task Status
+
+```bash
+curl http://localhost:8099/swarm/task_status/1
+```
+
+### Redistributing Tasks
+
+```bash
+curl -X POST http://localhost:8099/swarm/redistribute_tasks \
+  -H "Content-Type: application/json" \
+  -d '{"threshold": 5}'
+```
+
+### Getting Swarm Statistics
+
+```bash
+curl http://localhost:8099/swarm/statistics
+```
+
+### Scaling Agents
+
+```bash
+curl -X POST http://localhost:8099/agents/scale \
+  -H "Content-Type: application/json" \
+  -d '{"num_agents": 2}'
+```
 
 ## Architecture
 
@@ -60,6 +114,8 @@ The integrated BYOAI-Swarm system consists of the following main components:
 
 4. **Flask API**: Provides endpoints for system interaction and monitoring.
 
+5. **Docker Integration**: Allows dynamic spawning of agent containers for scalability.
+
 ## Workflow Structure
 
 Workflows are defined in YAML files with the following structure:
@@ -72,6 +128,29 @@ steps:
     priority: 5
     specialization: math
 ```
+
+## Error Handling
+
+The API provides clear error messages for various scenarios:
+
+- Invalid JSON payload
+- Missing required fields
+- Task not found
+- Internal server errors
+
+Error responses include a JSON object with an "error" key containing a descriptive message.
+
+## Logging and Monitoring
+
+The system provides detailed logging for all operations, including:
+
+- Task addition and execution
+- Agent registration and task assignment
+- Workflow loading and execution
+- API requests and responses
+- Dynamic agent scaling
+
+Logs can be found in the console output when running the application.
 
 ## Contributing
 
