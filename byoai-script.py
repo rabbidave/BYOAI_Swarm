@@ -36,15 +36,41 @@ def status():
 def swarm_state():
     return jsonify(swarm.get_swarm_state())
 
-@app.route('/swarm/add_task', methods=['POST'])
+@app.route('/swarm/add_task', methods=['GET', 'POST'])
 def add_task():
-    data = request.json
-    task_id = swarm.add_task(
-        description=data['description'],
-        priority=data.get('priority', 5),
-        specialization=data.get('specialization')
-    )
-    return jsonify({"task_id": task_id, "message": "Task added successfully"})
+    if request.method == 'GET':
+        return jsonify({
+            "message": "To add a task, send a POST request to this endpoint with a JSON payload containing 'description' (required), 'priority' (optional), and 'specialization' (optional)",
+            "example": {
+                "description": "Example task",
+                "priority": 5,
+                "specialization": "math"
+            }
+        }), 200
+
+    if request.content_type != 'application/json':
+        return jsonify({"error": "Content-Type must be application/json"}), 400
+
+    try:
+        data = request.get_json()
+    except Exception as e:
+        return jsonify({"error": f"Invalid JSON: {str(e)}"}), 400
+
+    if not data:
+        return jsonify({"error": "Empty JSON payload"}), 400
+
+    if 'description' not in data:
+        return jsonify({"error": "Task description is required"}), 400
+
+    try:
+        task_id = swarm.add_task(
+            description=data['description'],
+            priority=data.get('priority', 5),
+            specialization=data.get('specialization')
+        )
+        return jsonify({"task_id": task_id, "message": "Task added successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": f"Failed to add task: {str(e)}"}), 500
 
 def main():
     logging.info(f"BYOAI agent running on {CONTEXT_AGENT_HOST}:{CONTEXT_AGENT_PORT}")
