@@ -1,0 +1,30 @@
+name: Sample Advanced Workflow
+steps:
+  - name: High Priority Math Task
+    action: perform_complex_calculation
+    priority: 10
+    specialization: math
+
+  - name: Medium Priority Language Task
+    action: translate_text
+    priority: 5
+    specialization: language
+
+  - name: Low Priority Image Task
+    action: process_image
+    priority: 2
+    specialization: image
+
+  - name: General Task
+    action: general_processing
+    priority: 3
+
+  - name: Another Math Task
+    action: statistical_analysis
+    priority: 7
+    specialization: math
+
+  - name: Audio Processing Task
+    action: process_audio
+    priority: 4
+    specialization: audio
