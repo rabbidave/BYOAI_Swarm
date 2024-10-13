@@ -32,4 +32,4 @@ run = ["sh", "-c", "python byoai-script.py"]
 
 [[ports]]
 localPort = 8000
-externalPort = 80
+externalPort = 8099

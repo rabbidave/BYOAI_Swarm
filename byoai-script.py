@@ -36,6 +36,10 @@ def status():
 def swarm_state():
     return jsonify(swarm.get_swarm_state())
 
+@app.route('/test')
+def test():
+    return "Test endpoint is working"
+
 @app.route('/swarm/add_task', methods=['GET', 'POST'])
 def add_task():
     logging.info(f"Received {request.method} request to /swarm/add_task")
@@ -51,11 +55,11 @@ def add_task():
             }
         }), 200
 
-    if request.method == 'POST':
+    elif request.method == 'POST':
         logging.info(f"Request content type: {request.content_type}")
         logging.info(f"Request data: {request.data}")
 
-        if request.content_type != 'application/json':
+        if not request.is_json:
             return jsonify({"error": "Content-Type must be application/json"}), 400
 
         try:
@@ -82,6 +86,9 @@ def add_task():
             logging.error(f"Error adding task: {str(e)}")
             return jsonify({"error": f"Failed to add task: {str(e)}"}), 500
 
+    else:
+        return jsonify({"error": "Method not allowed"}), 405
+
 def main():
     logging.info(f"BYOAI agent running on {CONTEXT_AGENT_HOST}:{CONTEXT_AGENT_PORT}")
     logging.info(f"Loading workflows from {CONTEXT_WORKFLOW_DIR}")
@@ -96,7 +103,7 @@ def main():
             execute_workflow(workflow)
 
     # Start Flask app
-    app.run(host=CONTEXT_AGENT_HOST, port=CONTEXT_AGENT_PORT)
+    app.run(host=CONTEXT_AGENT_HOST, port=CONTEXT_AGENT_PORT, debug=True)
 
 if __name__ == "__main__":
     main()
