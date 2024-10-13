@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify
 # Updated environment variables
 CONTEXT_WORKFLOW_DIR = os.environ.get('CONTEXT_WORKFLOW_DIR', 'workflows')
 CONTEXT_AGENT_PORT = int(os.environ.get('CONTEXT_AGENT_PORT', '8000'))
-CONTEXT_AGENT_HOST = os.environ.get('CONTEXT_AGENT_HOST', '0.0.0.0')
+CONTEXT_AGENT_HOST = '0.0.0.0'  # Updated to always use '0.0.0.0'
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
