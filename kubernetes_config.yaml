@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: byoai-agent
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: byoai-agent
+  template:
+    metadata:
+      labels:
+        app: byoai-agent
+    spec:
+      containers:
+      - name: byoai-agent
+        image: byoai-agent:latest
+        env:
+        - name: CONTEXT_WORKFLOW_DIR
+          value: "/app/workflows"
+        - name: CONTEXT_AGENT_PORT
+          value: "8000"
+        - name: CONTEXT_AGENT_HOST
+          value: "0.0.0.0"
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: workflows
+          mountPath: /app/workflows
+      volumes:
+      - name: workflows
+        emptyDir: {}
