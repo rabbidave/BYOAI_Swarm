@@ -1,0 +1,69 @@
+https://github.com/openai/swarm
+
+https://github.com/rabbidave/byoai
+
+Integrate the newly released open AI framework with my agents as code Framework:
+
+Here is a detailed step-by-step prompt designed for an agent to implement the changes and integrate the two frameworks (BYOAI and Swarm) while conducting unit testing for validation:
+
+Objective: Modify BYOAI environment variables and workflows to adopt context-driven terminology and integrate Swarm’s decentralized agent concept. The goal is to rename environment variables and validate changes through stepwise unit testing.
+
+Step-by-Step Execution Plan
+
+1. Step 1: Clone the BYOAI Repository
+• Task: Use git clone to download the latest version of the BYOAI framework.
+• Unit Test: Verify that the repository has been successfully cloned and all required dependencies have been installed (use pip for Python dependencies).
+• Command:
+
+git clone https://github.com/rabbidave/byoai.git
+cd byoai
+pip install -r requirements.txt
+
+
+• Expected Output: All dependencies (Flask, requests, pyyaml) should be successfully installed.
+
+2. Step 2: Rename Environment Variables
+• Task: Replace all environment variables in the byoai-script.py file. For example, change WORKFLOW_DIR to CONTEXT_WORKFLOW_DIR, AGENT_API_PORT to CONTEXT_AGENT_PORT, etc.
+• Unit Test: Create a test script that runs the modified byoai-script.py and ensures all environment variables are correctly replaced and functional.
+• Command: Use a find-and-replace script to change all instances of the old variable names:
+
+sed -i 's/WORKFLOW_DIR/CONTEXT_WORKFLOW_DIR/g' byoai-script.py
+
+
+• Expected Output: No instances of the old environment variables remain, and the script still runs correctly.
+
+3. Step 3: Update Docker and Kubernetes Configurations
+• Task: Modify the docker-compose.yml and Kubernetes configuration files to reflect the new context-based environment variables.
+• Unit Test: Deploy agents using the new Docker configuration and check that the containers use the renamed variables.
+• Expected Output: Agents successfully register using the new CONTEXT_VARIABLES.
+4. Step 4: Integrate with Swarm’s Decentralized Agents
+• Task: Adjust agent behavior to dynamically pull tasks from a shared context repository, mirroring Swarm’s decentralized approach.
+• Unit Test: Simulate multiple agents pulling tasks from the same context, validating task execution.
+• Expected Output: Multiple agents successfully pull and execute tasks from a common shared context.
+5. Step 5: Implement Unit Tests for Workflow Execution
+• Task: Create unit tests that ensure workflows execute correctly with the updated context-driven environment variables.
+• Unit Test: For each workflow file, simulate task execution and validate the expected output.
+• Command: Use Python’s unittest framework to validate task executions:
+
+import unittest
+from byoai import workflow_executor
+
+class TestWorkflowExecution(unittest.TestCase):
+def test_workflow_execution(self):
+result = workflow_executor.run_workflow("example_workflow.yml")
+self.assertEqual(result, "Expected Output")
+
+if __name__ == "__main__":
+unittest.main()
+
+
+• Expected Output: All test cases should pass, confirming correct workflow execution.
+
+6. Step 6: Validate Logs and Monitoring
+• Task: Ensure all log outputs reflect the changes and agents log their tasks correctly using the context-driven terminology.
+• Unit Test: Check the log files to ensure that agents are registering and tasks are executing using the new context variables.
+• Expected Output: Logs confirm successful agent registration and task execution under the new naming scheme.
+
+Final Validation: Run integration tests that simulate full workflows across agents deployed on Docker or Kubernetes, ensuring the system operates smoothly with the new context variables. Validate task execution, agent communication, and logging.
+
+This plan uses unit tests to ensure each step of the renaming and integration process works correctly, helping to smoothly transition to the new framework setup.
