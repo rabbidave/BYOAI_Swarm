@@ -2,7 +2,7 @@ import os
 import yaml
 import logging
 from swarm_integration import SwarmIntegration
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from werkzeug.exceptions import BadRequest, NotFound
 import threading
 import time
@@ -128,6 +128,14 @@ def scale_agents():
     for _ in range(num_agents):
         swarm.add_agent()
     return jsonify({"message": f"Added {num_agents} agents"})
+
+@app.route('/http:/localhost:8099/<path:subpath>')
+def handle_misformed_url(subpath):
+    """
+    Handle misformed URLs that include 'http://localhost:8099/' in the path.
+    Redirect to the correct endpoint.
+    """
+    return redirect('/' + subpath)
 
 @app.errorhandler(BadRequest)
 def handle_bad_request(e):
