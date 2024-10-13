@@ -38,6 +38,9 @@ def swarm_state():
 
 @app.route('/swarm/add_task', methods=['GET', 'POST'])
 def add_task():
+    logging.info(f"Received {request.method} request to /swarm/add_task")
+    logging.info(f"Request headers: {request.headers}")
+    
     if request.method == 'GET':
         return jsonify({
             "message": "To add a task, send a POST request to this endpoint with a JSON payload containing 'description' (required), 'priority' (optional), and 'specialization' (optional)",
@@ -48,29 +51,36 @@ def add_task():
             }
         }), 200
 
-    if request.content_type != 'application/json':
-        return jsonify({"error": "Content-Type must be application/json"}), 400
+    if request.method == 'POST':
+        logging.info(f"Request content type: {request.content_type}")
+        logging.info(f"Request data: {request.data}")
 
-    try:
-        data = request.get_json()
-    except Exception as e:
-        return jsonify({"error": f"Invalid JSON: {str(e)}"}), 400
+        if request.content_type != 'application/json':
+            return jsonify({"error": "Content-Type must be application/json"}), 400
 
-    if not data:
-        return jsonify({"error": "Empty JSON payload"}), 400
+        try:
+            data = request.get_json()
+            logging.info(f"Parsed JSON data: {data}")
+        except Exception as e:
+            logging.error(f"Error parsing JSON: {str(e)}")
+            return jsonify({"error": f"Invalid JSON: {str(e)}"}), 400
 
-    if 'description' not in data:
-        return jsonify({"error": "Task description is required"}), 400
+        if not data:
+            return jsonify({"error": "Empty JSON payload"}), 400
 
-    try:
-        task_id = swarm.add_task(
-            description=data['description'],
-            priority=data.get('priority', 5),
-            specialization=data.get('specialization')
-        )
-        return jsonify({"task_id": task_id, "message": "Task added successfully"}), 201
-    except Exception as e:
-        return jsonify({"error": f"Failed to add task: {str(e)}"}), 500
+        if 'description' not in data:
+            return jsonify({"error": "Task description is required"}), 400
+
+        try:
+            task_id = swarm.add_task(
+                description=data['description'],
+                priority=data.get('priority', 5),
+                specialization=data.get('specialization')
+            )
+            return jsonify({"task_id": task_id, "message": "Task added successfully"}), 201
+        except Exception as e:
+            logging.error(f"Error adding task: {str(e)}")
+            return jsonify({"error": f"Failed to add task: {str(e)}"}), 500
 
 def main():
     logging.info(f"BYOAI agent running on {CONTEXT_AGENT_HOST}:{CONTEXT_AGENT_PORT}")
